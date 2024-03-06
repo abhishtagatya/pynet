@@ -5,26 +5,31 @@ import re
 
 import argparse
 
+from pynet.base import BaseRequest
 
-class TTFBRequest:
+
+class TTFBRequest(BaseRequest):
     """
     TTFB (Time To First Byte) Request Object
     """
 
-    def __init__(self, url, byte, start_time, end_time, fb_time):
+    def __init__(self, url, start_time, end_time, fb_time, sf=False):
         self.url = url
-        self.byte = byte
         self.start_time = start_time
         self.end_time = end_time
         self.fb_time = fb_time
 
+        if sf:
+            self.start_time = self.timestamp_to_str(self.start_time)
+            self.end_time = self.timestamp_to_str(self.end_time)
+
     @classmethod
-    def measure_ttfb(cls, url, byte=1024):
+    def measure_ttfb(cls, url, sf=False):
         """
         Measure TTFB (Time to First Byte(s)).
 
         :param url: Arbitrary URL String
-        :param byte: Measurement of a Byte (1024)
+        :param sf: Timestamp String Formatting (False)
         :return: Class Object
         """
 
@@ -42,20 +47,22 @@ class TTFBRequest:
 
             resp = b""
             while True:
-                chunk = sock.recv(byte)
+                chunk = sock.recv(1024)
 
                 if len(chunk) == 0:
                     break
 
                 resp += chunk
 
-                if len(resp) >= byte:
+                if len(resp) >= 1024:
                     break
 
             end_time = time.time()
 
         ttfb = end_time - start_time
-        return cls(url=url, byte=byte, start_time=start_time, end_time=end_time, fb_time=ttfb)
+        return cls(
+            url=url, start_time=start_time, end_time=end_time, fb_time=ttfb, sf=sf
+        )
 
     def to_json(self):
         return json.dumps(self.__dict__)
@@ -64,7 +71,7 @@ class TTFBRequest:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Measure TTBF (Time To First Byte)")
     parser.add_argument("url", help=f"Arbitrary URL")
-    parser.add_argument("-byte", help=f"Measurement of a Byte", required=False, default=1024)
+    parser.add_argument("--sf", help=f"Timestamp String Formatting", action="store_true")
     args = parser.parse_args()
 
-    print(TTFBRequest.measure_ttfb(url=args.url, byte=int(args.byte)).to_json())
+    print(TTFBRequest.measure_ttfb(url=args.url, sf=args.sf).to_json())
