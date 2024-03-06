@@ -7,6 +7,9 @@ import argparse
 
 
 class TCPHandshakeRequest:
+    """
+    TCP Handshake Request Object
+    """
 
     def __init__(self, host, port, start_time, end_time, hs_time):
         self.host = host
