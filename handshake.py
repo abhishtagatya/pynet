@@ -14,6 +14,8 @@ class TCPHandshakeRequest(BaseRequest):
     """
 
     def __init__(self, host, port, start_time, end_time, hs_time, sf=False):
+        super(TCPHandshakeRequest, self).__init__()
+
         self.host = host
         self.port = port
         self.start_time = start_time

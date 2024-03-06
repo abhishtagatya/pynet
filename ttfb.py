@@ -14,6 +14,8 @@ class TTFBRequest(BaseRequest):
     """
 
     def __init__(self, url, start_time, end_time, fb_time, sf=False):
+        super(TTFBRequest, self).__init__()
+
         self.url = url
         self.start_time = start_time
         self.end_time = end_time
