@@ -7,6 +7,15 @@ Required modules
 - Python 3.8+
 - Socket (built-in)
 - Argparse (built-in)
+- iperf
+
+### Installation
+
+#### Iperf
+
+```shell
+sudo apt-get install iperf3 && pip3 install iperf3
+```
 
 ### Scripts
 
