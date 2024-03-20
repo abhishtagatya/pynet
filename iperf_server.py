@@ -15,9 +15,9 @@ class IperfServer():
         server.port = self.port
         server.verbose = self.verbose
 
+        print(f"Starting to Server at {self.bind_addr}:{self.port}")
         while True:
-            print(f"Starting Server at {self.bind_addr}:{self.port}")
-            server.run()
+            print(server.run().json)
 
 
 
