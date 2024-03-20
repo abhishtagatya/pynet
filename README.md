@@ -39,3 +39,16 @@ Measuring the total amount of data downloaded during a test session.
 ```shell
 python download.py https://fit.vut.cz
 ```
+
+#### IPERF3 Network Test
+Using Iperf3 to measure active achievable bandwidth on IP Networks.
+
+Starting the Server :
+```shell
+python iperf_server.py --address=127.0.0.1 --port=9631 --v
+```
+
+Using the Client :
+```shell
+python iperf_client.py address=127.0.0.1 port=9631 conn=tcp --duration=1 --blksize=1234 --num_streams=1
+```
